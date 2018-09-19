@@ -1,7 +1,6 @@
-# SmartHotel360
-
 ![](SmartHotel360Logo.png)
 
+**What is SmartHotel360 ?**                  
 **SmartHotel360** is a fictitious smart hospitality company showcasing the future of connected travel.  
 Their vision is to provide:
 - Intelligent, conversational, and personalized apps and experiences to guests 
@@ -9,14 +8,22 @@ Their vision is to provide:
 - Real-time customer and business insights for hotel managers & investors
 - Unified analytics and package deal recommendations for campaign managers.
 
+----------
+
+**What is the intent of this demo?**          
 There’s never been a better time to be a developer. Our intent with these set of reference apps and Azure backend is to show developers how to get started building the apps of the future, today!
 
 ------
 
-Please follow below exercises inorder to deploy your application, :
+**Where is the code for the SmartHotel360 applications?**                         
 
-## Exercise 1: Endpoint Creation
+The entire code for the SmartHotel360 application is maintained on GitHub at https://github.com/microsoft/SmartHotel360. The build and release pipelines in this project are set to point to this repo.
 
+--------
+**How can I deploy the application to my subscription?**                  
+Please follow the exercises below to deploy the "Public Web" application.
+
+### Exercise 1: Endpoint Creation:
 Service endpoints are a bundle of properties securely stored by the VSTS and is a way for VSTS to connect to the external systems or services.
 
 Since the connections are not established during project provisioning,the endpoint - Azure Resource Manager needs to be created manually.
@@ -31,7 +38,7 @@ Since the connections are not established during project provisioning,the endpoi
 
     ![](AzureEndpoint.png)
 
-## Step 2: Configure Release Definition
+### Step 2: Configure Release Definition
 
 Now that the connection is established, we will manually map the Azure endpoint to release definition.
 
