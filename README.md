@@ -20,36 +20,49 @@ There’s never been a better time to be a developer. Our intent with these set 
 The entire code for the SmartHotel360 application is maintained on GitHub at https://github.com/microsoft/SmartHotel360. The build and release pipelines in this project are set to point to this repo.
 
 --------
-**How can I deploy the application to my subscription?**                  
-Please follow the exercises below to deploy the "Public Web" application.
+**How can I deploy the application to my subscription?**  
+**SmartHotel360** has multiple apps that share a common backend, including a public website where hotel guests can book a room, smart conference rooms, and even verify if their pets are allowed in the hotel. In this demo we are going to build and deploy public website of **SmartHotel360**
 
-### Exercise 1: Endpoint Creation:
-Service endpoints are a bundle of properties securely stored by the VSTS and is a way for VSTS to connect to the external systems or services.
+Please follow the steps below to deploy the "Public Web" application.
 
-Since the connections are not established during project provisioning,the endpoint - Azure Resource Manager needs to be created manually.
+### Build and Deploy SmartHotel360 Public Web
 
-1. **Azure Resource Manager Service Endpoint**: Defines and secures a connection to a Microsoft Azure subscription using Service Principal Authentication (SPA).
+1. Navigate to **Pipelines \| Builds**. Select **SmartHotel_Petchecker-Web** pipeline and click **Edit**.
+  ![EditBuildPipeline](editbuildpipeline.png)
 
-    In the VSTS, navigate to the **Services** by clicking on the gear icon ![](gear.png), and click on the **+ New Service Endpoint** button. Select the **Azure Resource Manager** and  specify the  **Connection name**, select the **Subscription** from the dropdown and click on the **OK** button. Leave the **Resource Group** empty. This endpoint will be used to connect **VSTS** and **Azure**.
+1. The build pipeline has two agent jobs to build Website project and Pet Checker function app project.
+    ![BuildPipeline](buildpipeline.png)
 
-    You will be prompted to authorize this connection with Azure credentials. Disable pop-up blocker in your browser if you see a blank screen after clicking the **OK** button, and retry the step.
+    - The SmartHotel360.Website project: An ASP.NET Core website which is a web app developed using React+Redux and server-side rendering.
 
-    > ***Tip***: If your subscription is not listed or to specify an existing service principal, click the link in the dialog which will switch to manual configuration mode and follow the <a href="https://blogs.msdn.microsoft.com/devops/2015/10/04/automating-azure-resource-group-deployment-using-a-service-principal-in-visual-studio-online-buildrelease-management/"> Service Principal creation </a> instructions.
+    - The SmartHotel360.WebsiteFunction project: An Azure Function used to analyze photos of pets using the Cognitive Services Vision API and Azure Cosmos DB.
 
-    ![](AzureEndpoint.png)
+1. Click on **Queue** to trigger the build. Once the build process starts, select the build number to see the build in progress. 
+      
+      ![QueueBuild](queuebuild.png)
 
-### Step 2: Configure Release Definition
+1. Once the build is success navigate to **Pipelines \| Releases**. Select **SmartHotel360_Website-Deploy** pipeline and click **Edit**. Then click on **Tasks**.
+     
+     ![EditRelease](editrelease.png)
 
-Now that the connection is established, we will manually map the Azure endpoint to release definition.
+1. Select **Azure Resource Group Deployment** task. Select your Azure subscription from **Azure subscription** dropdown. Click **Authorize**.
+   
+    ![AzureSubscription](azuresubscription.png)
 
-1. Navigate to release definition **PublicWebCD** under **Releases** tab, and click on **Edit**. Click on **Tasks**.
+    You will be prompted to authorize this connection with Azure credentials. Disable pop-up blocker in your browser if you see a blank screen after clicking the OK button, and please retry the step.
 
-    ![](Updaterd1.png)
+   This creates an **Azure Resource Manager Service Endpoint**, which defines and secures a connection to a Microsoft Azure subscription, using Service Principal Authentication (SPA). This endpoint will be used to connect** Azure DevOps** and **Azure**.
 
-    ![](Updaterd2.png)
+   > If your subscription is not listed or to specify an existing service principal, follow the [Service Principal creation](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/connect-to-azure?view=vsts) instructions.
 
-2. Under **CosmosDB** phase, select **Azure Deployment CosmosDB**. Update **Azure Subscription** from the dropdown.
 
-     ![](Updaterd3.png)
+1. Update the **Azure Subscription** in all the other tasks and **Save** the changes.
 
-3. Repeat the above step to update **Azure Subscription** under the **Function** phase and **Web** phase. 
+1. Click **Create Release** to trigger the deployment.
+     
+     ![CreateRelease](createrelease.png)
+
+   Once the deployment is success, navigate to your **Azure portal**. You will see a website https://smarthotel360xxxx.azurewebsites.net/ under the resource group **Website**. Browse the website. The deployed application will look like as below
+   
+    ![Website](website.png)
+
